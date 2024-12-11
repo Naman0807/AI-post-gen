@@ -1,0 +1,100 @@
+/* styles/globals.css */
+
+/* Reset some basic styling for consistency across browsers */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	background-color: #f8f8f8;
+	color: #333;
+	line-height: 1.5;
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+button {
+	cursor: pointer;
+	border: none;
+}
+
+input,
+textarea {
+	font-family: inherit;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+/* Utility classes */
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Add these to your existing globals.css */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Add this to your existing styles */
+.backdrop-blur-lg {
+	backdrop-filter: blur(16px);
+}

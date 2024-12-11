@@ -1,0 +1,55 @@
+/* styles/tailwind.css */
+
+/* Import Tailwind's base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Tailwind theme (optional) */
+@layer base {
+	/* Add global custom styles on top of Tailwind's base styles */
+	h1 {
+		font-size: 2rem;
+		color: #333;
+	}
+
+	h2 {
+		font-size: 1.75rem;
+		color: #333;
+	}
+
+	p {
+		font-size: 1rem;
+		color: #555;
+	}
+
+	a {
+		color: #1d4ed8; /* Tailwind blue */
+	}
+}
+
+@layer components {
+	/* Custom components (if needed) */
+	.btn-primary {
+		@apply bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600;
+	}
+
+	.btn-secondary {
+		@apply bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600;
+	}
+}
+
+@layer utilities {
+	/* Additional custom utility classes */
+	.text-primary {
+		color: #1d4ed8; /* Custom primary color */
+	}
+
+	.bg-primary {
+		background-color: #1d4ed8;
+	}
+
+	.btn {
+		@apply py-2 px-4 rounded;
+	}
+}
