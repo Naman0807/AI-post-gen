@@ -63,10 +63,10 @@ pip install -r requirements.txt
 cp .env
 ```
 
-GEMINI_API_KEY=your_gemini_api_key
-HUGGINGFACE_API_KEY=your_huggingface_api_key
-MONGODB_URI=your_mongodb_uri
-JWT_SECRET_KEY=your_jwt_secret
+GEMINI_API_KEY=your_gemini_api_key &nbsp
+HUGGINGFACE_API_KEY=your_huggingface_api_key &nbsp
+MONGODB_URI=your_mongodb_uri &nbsp
+JWT_SECRET_KEY=your_jwt_secret &nbsp
 
 3. Start the Flask server
 
