@@ -38,29 +38,35 @@ const History = () => {
 			return;
 		}
 
-		console.log("Deleting post with ID:", postId); // Debug log
-
 		try {
 			const token = localStorage.getItem("token");
+			if (!token) {
+				toast.error("Authentication required");
+				return;
+			}
+
 			const response = await fetch(
 				`http://localhost:5000/user/posts/${postId}`,
 				{
 					method: "DELETE",
 					headers: {
 						Authorization: `Bearer ${token}`,
+						"Content-Type": "application/json",
 					},
+					credentials: "include", // Important for CORS
 				}
 			);
+
+			const data = await response.json();
 
 			if (response.ok) {
 				setPosts(posts.filter((post) => post._id !== postId));
 				toast.success("Post deleted successfully");
 			} else {
-				const errorData = await response.json();
-				throw new Error(errorData.error || "Failed to delete post");
+				throw new Error(data.error || "Failed to delete post");
 			}
 		} catch (error) {
-			console.error("Delete error:", error); // Debug log
+			console.error("Delete error:", error);
 			toast.error(error.message || "Failed to delete post");
 		}
 	};
@@ -74,7 +80,6 @@ const History = () => {
 				},
 			});
 			const data = await response.json();
-			// Convert the _id from the string format if needed
 			const postsWithIds = data.posts.map((post) => ({
 				...post,
 				_id: post._id.$oid || post._id, // Handle both string and ObjectId formats

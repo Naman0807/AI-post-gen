@@ -54,6 +54,13 @@ const Dashboard = () => {
 		}
 	}, [router]);
 
+	useEffect(() => {
+		const geminiApiKey = localStorage.getItem("gemini_api_key");
+		const hfApiKey = localStorage.getItem("hf_api_key");
+		setGeminiApiKey(geminiApiKey);
+		setHfApiKey(hfApiKey);
+	}, []);
+
 	const handleInitializeAPI = async () => {
 		if (!hfApiKey || !geminiApiKey) {
 			toast.error("Please enter both API keys");
@@ -77,11 +84,12 @@ const Dashboard = () => {
 			if (!response.ok) {
 				throw new Error("Failed to initialize APIs");
 			}
-
 			setIsConfigured(true);
+			localStorage.setItem("gemini_api_key", geminiApiKey);
+			localStorage.setItem("hf_api_key", hfApiKey);
 			toast.success("APIs initialized successfully!");
 		} catch (err) {
-			toast.error(err.message || "Failed to initialize APIs");
+			toast.error(err.message);
 		}
 	};
 
@@ -149,6 +157,8 @@ const Dashboard = () => {
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("gemini_api_key");
+		localStorage.removeItem("hf_api_key");
 		toast.success("Logged out successfully");
 		router.push("/auth/login");
 	};
