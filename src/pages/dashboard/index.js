@@ -24,7 +24,9 @@ import {
 	Tooltip,
 } from "@mui/material";
 import { ContentCopy, Download, Send, Logout } from "@mui/icons-material";
+import HistoryIcon from "@mui/icons-material/History";
 import { alpha } from "@mui/material/styles";
+import History from "../history";
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -182,6 +184,23 @@ const Dashboard = () => {
 					>
 						Content Generator
 					</Typography>
+
+					<Button
+						onClick={() => router.push("/history")}
+						startIcon={<HistoryIcon />}
+						sx={{
+							background: "linear-gradient(45deg, #ff00e4, #00fff2)",
+							color: "black",
+							fontWeight: "bold",
+							"&:hover": {
+								transform: "translateY(-2px)",
+								boxShadow: "0 8px 20px rgba(0, 255, 242, 0.3)",
+							},
+						}}
+					>
+						History
+					</Button>
+
 					<Button
 						onClick={handleLogout}
 						startIcon={<Logout />}

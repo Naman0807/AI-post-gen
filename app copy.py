@@ -44,7 +44,7 @@ config = {
     "huggingface_key": None,
     "gemini_key": None,
     "hf_headers": None,
-    "hf_image_url": "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+    "hf_image_url": "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-3.5-large-turbo",
     "gemini_model": None,
 }
 
@@ -175,6 +175,9 @@ def register():
             "email": data["email"],
             "password": generate_password_hash(data["password"]),
             "posts": [],
+            "hf_api_key": None,
+            "gemini_api_key": None,
+            "setup_completed": False,
             "created_at": datetime.utcnow(),
         }
 
@@ -411,19 +414,6 @@ def generate_post():
             image_data = base64.b64encode(image_response.content).decode("utf-8")
             images.append(f"data:image/jpeg;base64,{image_data}")
 
-        # Save post to user's posts in MongoDB
-        post = {
-            "platform": platform,
-            "topic": topic,
-            "content": best_content,
-            "images": images,
-            "created_at": datetime.utcnow(),
-        }
-
-        mongo.db.users.update_one(
-            {"_id": ObjectId(user_id)}, {"$push": {"posts": post}}
-        )
-
         # After generating the content, calculate engagement score
         engagement_prompt = f"""
         Analyze this social media post for {platform} and give it an engagement score out of 100.
@@ -441,6 +431,20 @@ def generate_post():
 
         score_response = config["gemini_model"].generate_content(engagement_prompt)
         engagement_score = int(score_response.text.strip())
+
+        # Save post to user's posts in MongoDB
+        post = {
+            "platform": platform,
+            "topic": topic,
+            "content": best_content,
+            "images": images,
+            "engagement_score": engagement_score,
+            "created_at": datetime.utcnow(),
+        }
+
+        mongo.db.users.update_one(
+            {"_id": ObjectId(user_id)}, {"$push": {"posts": post}}
+        )
 
         return (
             jsonify(
@@ -467,9 +471,15 @@ def get_user_posts():
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        return jsonify({"posts": user.get("posts", [])}), 200
+        posts = user.get("posts", [])
+        for post in posts:
+            post["_id"] = str(post["_id"])
+            if "engagement_score" not in post:
+                post["engagement_score"] = 0
+        return jsonify({"posts": posts}), 200
 
     except Exception as e:
+        print(f"Error in get_user_posts: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 
@@ -495,50 +505,11 @@ def get_user_analytics():
                 {
                     "total_posts": total_posts,
                     "platform_distribution": platform_stats,
-                    "recent_posts": user["posts"][-5:],  # Last 5 posts
+                    "recent_posts": user["posts"][-5:],
                 }
             ),
             200,
         )
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-@app.route("/save_post", methods=["POST"])
-def save_post():
-    try:
-        data = request.json
-        post_content = data.get("post")
-        image_data = data.get("image")
-        platform = data.get("platform")
-        topic = data.get("topic")
-
-        # Create posts directory if it doesn't exist
-        os.makedirs("posts", exist_ok=True)
-
-        # Generate timestamp for unique filename
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        base_filename = f"posts/{timestamp}_{platform}"
-
-        # Save post data as JSON
-        post_data = {
-            "platform": platform,
-            "topic": topic,
-            "content": post_content,
-            "timestamp": timestamp,
-        }
-
-        with open(f"{base_filename}.json", "w") as f:
-            json.dump(post_data, f, indent=4)
-
-        # Save image if provided
-        if image_data and image_data.startswith("data:image"):
-            image_data = image_data.split(",")[1]
-            image_bytes = base64.b64decode(image_data)
-            image = Image.open(io.BytesIO(image_bytes))
-            image.save(f"{base_filename}.png")
-
-        return jsonify({"message": "Post saved successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
