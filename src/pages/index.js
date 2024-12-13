@@ -1,3 +1,4 @@
+// src/pages/index.js
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -13,27 +14,30 @@ import {
 import { styled } from "@mui/material/styles";
 
 // Custom styled components
-const GradientBackground = styled("div")`
-	min-height: 100vh;
-	background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-	position: relative;
-`;
+const StyledButton = styled(Button)(({ theme }) => ({
+	textTransform: "none",
+	padding: "12px 32px",
+	fontSize: "1.1rem",
+	borderRadius: "8px",
+	transition: "all 0.3s ease-in-out",
+	"&:hover": {
+		transform: "translateY(-2px)",
+		boxShadow: "0 8px 20px rgba(0, 255, 242, 0.3)",
+	},
+}));
 
-const GlassCard = styled(Card)`
-	background: rgba(255, 255, 255, 0.1);
-	backdrop-filter: blur(10px);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	transition: transform 0.3s ease;
-	&:hover {
-		transform: translateY(-5px);
-	}
-`;
-
-const StyledButton = styled(Button)`
-	text-transform: none;
-	padding: 12px 32px;
-	font-size: 1.1rem;
-`;
+const GlassCard = styled(Card)(({ theme }) => ({
+	backgroundImage:
+		"linear-gradient(135deg, rgba(13, 25, 48, 0.9), rgba(13, 25, 48, 0.4))",
+	backdropFilter: "blur(10px)",
+	border: "1px solid rgba(0, 255, 242, 0.1)",
+	boxShadow: "0 8px 32px rgba(0, 255, 242, 0.1)",
+	transition: "all 0.3s ease-in-out",
+	"&:hover": {
+		transform: "translateY(-5px)",
+		boxShadow: "0 12px 40px rgba(0, 255, 242, 0.2)",
+	},
+}));
 
 const Home = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,98 +49,88 @@ const Home = () => {
 	}, []);
 
 	return (
-		<GradientBackground>
-			<Container maxWidth="lg" sx={{ py: 8 }}>
+		<Box
+			sx={{
+				minHeight: "100vh",
+				position: "relative",
+				display: "flex",
+				flexDirection: "column",
+			}}
+		>
+			<Container maxWidth="lg" sx={{ py: 8, flex: 1 }}>
 				<Box textAlign="center" mb={8}>
 					<Typography
 						variant="h1"
 						component="h1"
-						color="white"
 						sx={{
 							fontSize: { xs: "2.5rem", md: "3.75rem" },
 							fontWeight: 700,
 							mb: 2,
+							backgroundImage: "linear-gradient(45deg, #00fff2, #ff00e4)",
+							backgroundClip: "text",
+							WebkitBackgroundClip: "text",
+							color: "transparent",
+							textShadow: "0 0 20px rgba(0, 255, 242, 0.3)",
 						}}
 					>
-						Welcome to Your Social Media Post Generator
+						Welcome to NexusPost
 					</Typography>
 
 					<Typography
 						variant="h5"
-						color="rgba(255, 255, 255, 0.9)"
-						sx={{ mb: 6 }}
+						sx={{
+							mb: 6,
+							color: "text.secondary",
+						}}
 					>
-						Create and Manage Your Social Media Posts Effortlessly
+						AI-Powered Social Media Content Creation
 					</Typography>
-
 					<Grid container spacing={4} sx={{ mb: 6 }}>
-						<Grid item xs={12} md={4}>
-							<GlassCard>
-								<CardContent>
-									<Typography
-										variant="h5"
-										component="h2"
-										color="white"
-										gutterBottom
-									>
-										AI-Powered
-									</Typography>
-									<Typography variant="body1" color="rgba(255, 255, 255, 0.8)">
-										Generate engaging posts using advanced AI technology
-									</Typography>
-								</CardContent>
-							</GlassCard>
-						</Grid>
-
-						<Grid item xs={12} md={4}>
-							<GlassCard>
-								<CardContent>
-									<Typography
-										variant="h5"
-										component="h2"
-										color="white"
-										gutterBottom
-									>
-										Multi-Platform
-									</Typography>
-									<Typography variant="body1" color="rgba(255, 255, 255, 0.8)">
-										Support for LinkedIn, Twitter, Instagram, and more
-									</Typography>
-								</CardContent>
-							</GlassCard>
-						</Grid>
-
-						<Grid item xs={12} md={4}>
-							<GlassCard>
-								<CardContent>
-									<Typography
-										variant="h5"
-										component="h2"
-										color="white"
-										gutterBottom
-									>
-										Image Generation
-									</Typography>
-									<Typography variant="body1" color="rgba(255, 255, 255, 0.8)">
-										Create matching visuals for your posts automatically
-									</Typography>
-								</CardContent>
-							</GlassCard>
-						</Grid>
+						{[
+							{
+								title: "AI-Powered",
+								description:
+									"Generate engaging posts using advanced AI technology",
+							},
+							{
+								title: "Multi-Platform",
+								description:
+									"Support for LinkedIn, Twitter, Instagram, and more",
+							},
+							{
+								title: "Image Generation",
+								description:
+									"Create matching visuals for your posts automatically",
+							},
+						].map((feature, index) => (
+							<Grid item xs={12} md={4} key={index}>
+								<GlassCard>
+									<CardContent>
+										<Typography
+											variant="h5"
+											component="h2"
+											color="primary"
+											gutterBottom
+										>
+											{feature.title}
+										</Typography>
+										<Typography variant="body1" color="text.secondary">
+											{feature.description}
+										</Typography>
+									</CardContent>
+								</GlassCard>
+							</Grid>
+						))}
 					</Grid>
-
 					<Box sx={{ mt: 4 }}>
 						{isAuthenticated ? (
 							<Link href="/dashboard" passHref>
 								<StyledButton
 									variant="contained"
-									color="primary"
 									sx={{
-										backgroundColor: "white",
-										color: "#1e3c72",
-										"&:hover": {
-											backgroundColor: "rgba(255, 255, 255, 0.9)",
-										},
+										background: "linear-gradient(45deg, #00fff2, #ff00e4)",
+										color: "background.default",
+										fontWeight: "bold",
 									}}
 								>
 									Go to Dashboard
@@ -148,11 +142,9 @@ const Home = () => {
 									<StyledButton
 										variant="contained"
 										sx={{
-											backgroundColor: "white",
-											color: "#1e3c72",
-											"&:hover": {
-												backgroundColor: "rgba(255, 255, 255, 0.9)",
-											},
+											background: "linear-gradient(45deg, #00fff2, #ff00e4)",
+											color: "background.default",
+											fontWeight: "bold",
 										}}
 									>
 										Log In
@@ -162,11 +154,11 @@ const Home = () => {
 									<StyledButton
 										variant="outlined"
 										sx={{
-											borderColor: "white",
-											color: "white",
+											borderColor: "primary.main",
+											color: "primary.main",
 											"&:hover": {
-												borderColor: "rgba(255, 255, 255, 0.9)",
-												backgroundColor: "rgba(255, 255, 255, 0.1)",
+												borderColor: "primary.light",
+												backgroundColor: "rgba(0, 255, 242, 0.1)",
 											},
 										}}
 									>
@@ -182,19 +174,18 @@ const Home = () => {
 			<Box
 				component="footer"
 				sx={{
-					position: "absolute",
-					bottom: 0,
 					width: "100%",
-					backgroundColor: "rgba(0, 0, 0, 0.2)",
+					backgroundColor: "rgba(13, 25, 48, 0.8)",
 					backdropFilter: "blur(10px)",
+					borderTop: "1px solid rgba(0, 255, 242, 0.1)",
 					py: 2,
 				}}
 			>
-				<Typography variant="body2" color="white" align="center">
-					© 2024 Your App Name. All Rights Reserved.
+				<Typography variant="body2" color="text.secondary" align="center">
+					© 2024 NexusPost. All Rights Reserved.
 				</Typography>
 			</Box>
-		</GradientBackground>
+		</Box>
 	);
 };
 

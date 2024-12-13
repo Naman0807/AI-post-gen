@@ -86,7 +86,7 @@ const Register = () => {
 							background: "linear-gradient(45deg, #00fff2, #ff00e4)",
 							borderRadius: "inherit",
 							zIndex: -1,
-							animation: "borderGlow 3s ease-in-out infinite alternate",
+							animation: "borderGlow 2.5s ease-in-out infinite alternate",
 						},
 						"@keyframes borderGlow": {
 							"0%": { opacity: 0.5 },
@@ -101,15 +101,16 @@ const Register = () => {
 							align="center"
 							gutterBottom
 							sx={{
-								fontWeight: 700,
+								fontWeight: 900,
 								background: "linear-gradient(45deg, #00fff2, #ff00e4)",
 								backgroundClip: "text",
 								WebkitBackgroundClip: "text",
 								color: "transparent",
+								textShadow: "0 0 20px rgba(0, 255, 242, 0.3)",
 								mb: 4,
 							}}
 						>
-							Create Account
+							Create Your NexusPost Account
 						</Typography>
 
 						{error && (

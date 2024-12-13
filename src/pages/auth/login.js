@@ -63,7 +63,7 @@ const Login = () => {
 							background: "linear-gradient(45deg, #00fff2, #ff00e4)",
 							borderRadius: "inherit",
 							zIndex: -1,
-							animation: "borderGlow 3s ease-in-out infinite alternate",
+							animation: "borderGlow 2.5s ease-in-out infinite alternate",
 						},
 					}}
 				>
@@ -75,15 +75,15 @@ const Login = () => {
 							gutterBottom
 							sx={{
 								fontWeight: 700,
-								background: "linear-gradient(45deg, #00fff2, #ff00e4)",
+								background: "linear-gradient(20deg, #00fff2, #ff11e4)",
 								backgroundClip: "text",
 								WebkitBackgroundClip: "text",
 								color: "transparent",
-								textShadow: "0 0 20px rgba(0, 255, 242, 0.5)",
+								textShadow: "0 0 20px rgba(0, 255, 151, 0.7)",
 								mb: 4,
 							}}
 						>
-							Welcome Back
+							Welcome to NexusPost
 						</Typography>
 
 						{error && (
