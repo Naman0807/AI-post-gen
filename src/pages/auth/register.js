@@ -110,7 +110,7 @@ const Register = () => {
 								mb: 4,
 							}}
 						>
-							Create Your NexusPost Account
+							Create Your PostCraft Account
 						</Typography>
 
 						{error && (

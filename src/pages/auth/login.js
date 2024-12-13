@@ -83,7 +83,7 @@ const Login = () => {
 								mb: 4,
 							}}
 						>
-							Welcome to NexusPost
+							Welcome to PostCraft
 						</Typography>
 
 						{error && (

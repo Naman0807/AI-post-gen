@@ -73,7 +73,7 @@ const Home = () => {
 							textShadow: "0 0 20px rgba(0, 255, 242, 0.3)",
 						}}
 					>
-						Welcome to NexusPost
+						Welcome to PostCraft
 					</Typography>
 
 					<Typography
@@ -182,7 +182,7 @@ const Home = () => {
 				}}
 			>
 				<Typography variant="body2" color="text.secondary" align="center">
-					© 2024 NexusPost. All Rights Reserved.
+					© 2024 PostCraft. All Rights Reserved.
 				</Typography>
 			</Box>
 		</Box>

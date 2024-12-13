@@ -192,7 +192,7 @@ const Dashboard = () => {
 							textShadow: "0 0 20px rgba(0, 255, 242, 0.3)",
 						}}
 					>
-						NexusPost Dashboard
+						PostCraft Dashboard
 					</Typography>
 
 					<Button

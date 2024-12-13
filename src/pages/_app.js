@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<ThemeProvider theme={theme}>
 			<Head>
-				<title>NexusPost - AI Social Media Content Generator</title>
+				<title>PostCraft - AI Social Media Content Generator</title>
 				<meta
 					name="description"
 					content="AI-powered social media content creation platform"
