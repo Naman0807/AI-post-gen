@@ -77,6 +77,7 @@ const History = () => {
 				throw Error("Failed to fetch posts");
 			}
 		} catch (error) {
+			console.error("Fetch error:", error);
 			toast.error("Failed to fetch posts");
 		} finally {
 			setLoading(false);

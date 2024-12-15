@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import {
@@ -195,7 +194,7 @@ const Login = () => {
 								mt: 2,
 							}}
 						>
-							Don't have an account?{" "}
+							Don&apos;t have an account?{" "}
 							<Link
 								href="/auth/register"
 								style={{
