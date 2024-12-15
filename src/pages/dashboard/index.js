@@ -26,7 +26,7 @@ import {
 import { ContentCopy, Download, Send, Logout } from "@mui/icons-material";
 import HistoryIcon from "@mui/icons-material/History";
 import { alpha } from "@mui/material/styles";
-import History from "../history";
+import { apiRequest } from "../../utils/api";
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -68,20 +68,13 @@ const Dashboard = () => {
 		}
 
 		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`http://localhost:5000/initialize`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({
-					hf_api_key: hfApiKey,
-					gemini_api_key: geminiApiKey,
-				}),
-			});
+			const apiData = {
+				hf_api_key: hfApiKey,
+				gemini_api_key: geminiApiKey,
+			};
+			const response = await apiRequest("/initialize", "POST", apiData);
 
-			if (!response.ok) {
+			if (response.status !== 200) {
 				throw new Error("Failed to initialize APIs");
 			}
 			setIsConfigured(true);
@@ -104,31 +97,21 @@ const Dashboard = () => {
 		setError(null);
 
 		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch(`http://localhost:5000/generate_post`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({
-					topic,
-					platform,
-					imageCount,
-					postLength,
-					temperature,
-				}),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				throw new Error(data.message || "Failed to generate content");
+			const postOptions = {
+				topic,
+				platform,
+				imageCount,
+				postLength,
+				temperature,
+			};
+			const response = await apiRequest("/generate_post", "POST", postOptions);
+			if (response.status !== 200) {
+				throw new Error(response.data.message || "Failed to generate content");
 			}
 
-			setGeneratedContent(data.text);
-			setGeneratedImage(data.images);
-			setEngagementScore(data.engagement_score);
+			setGeneratedContent(response.data.text);
+			setGeneratedImage(response.data.images);
+			setEngagementScore(response.data.engagement_score);
 			toast.success("Content generated successfully!");
 		} catch (err) {
 			setError(err.message || "Something went wrong");

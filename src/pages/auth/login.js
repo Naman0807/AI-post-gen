@@ -14,6 +14,7 @@ import {
 	useTheme,
 } from "@mui/material";
 import { Email, Lock } from "@mui/icons-material";
+import { apiRequest } from "../../utils/api";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
@@ -25,10 +26,11 @@ const Login = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(`http://localhost:5000/auth/login`, {
+			const loginData = {
 				email,
 				password,
-			});
+			};
+			const response = await apiRequest("/auth/login", "POST", loginData);
 			localStorage.setItem("token", response.data.token);
 			router.push("/dashboard");
 		} catch (err) {
