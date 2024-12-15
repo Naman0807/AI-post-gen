@@ -1,6 +1,5 @@
 // src/pages/index.js
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import {
 	Button,
@@ -14,7 +13,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 // Custom styled components
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(() => ({
 	textTransform: "none",
 	padding: "12px 32px",
 	fontSize: "1.1rem",
@@ -26,7 +25,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 	},
 }));
 
-const GlassCard = styled(Card)(({ theme }) => ({
+const GlassCard = styled(Card)(() => ({
 	backgroundImage:
 		"linear-gradient(135deg, rgba(13, 25, 48, 0.9), rgba(13, 25, 48, 0.4))",
 	backdropFilter: "blur(10px)",
@@ -41,7 +40,6 @@ const GlassCard = styled(Card)(({ theme }) => ({
 
 const Home = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const router = useRouter();
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");

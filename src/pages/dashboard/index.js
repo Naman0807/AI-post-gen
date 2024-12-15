@@ -38,7 +38,6 @@ const Dashboard = () => {
 	const [generatedContent, setGeneratedContent] = useState("");
 	const [generatedImage, setGeneratedImage] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 	const [hfApiKey, setHfApiKey] = useState("");
 	const [geminiApiKey, setGeminiApiKey] = useState("");
 	const [isConfigured, setIsConfigured] = useState(false);
@@ -88,13 +87,11 @@ const Dashboard = () => {
 
 	const handleGenerate = async () => {
 		if (!topic) {
-			setError("Please enter a topic");
 			toast.error("Please enter a topic");
 			return;
 		}
 
 		setLoading(true);
-		setError(null);
 
 		try {
 			const postOptions = {
@@ -114,7 +111,6 @@ const Dashboard = () => {
 			setEngagementScore(response.data.engagement_score);
 			toast.success("Content generated successfully!");
 		} catch (err) {
-			setError(err.message || "Something went wrong");
 			toast.error(err.message || "Failed to generate content");
 		} finally {
 			setLoading(false);
