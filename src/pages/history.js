@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import toast from "react-hot-toast";
 import { ContentCopy, Download, ArrowBack, Delete } from "@mui/icons-material";
+import { apiRequest } from "../utils/api";
 
 const History = () => {
 	const router = useRouter();
@@ -45,21 +46,13 @@ const History = () => {
 				return;
 			}
 
-			const response = await fetch(
-				`http://localhost:5000/user/posts/${postId}`,
-				{
-					method: "DELETE",
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"Content-Type": "application/json",
-					},
-					credentials: "include", // Important for CORS
-				}
+			const response = await apiRequest(
+				`/user/posts/${postId}`,
+				"DELETE",
+				null
 			);
 
-			const data = await response.json();
-
-			if (response.ok) {
+			if (response.status === 200) {
 				setPosts(posts.filter((post) => post._id !== postId));
 				toast.success("Post deleted successfully");
 			} else {
@@ -73,18 +66,16 @@ const History = () => {
 
 	const fetchPosts = async () => {
 		try {
-			const token = localStorage.getItem("token");
-			const response = await fetch("http://localhost:5000/user/posts", {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			const data = await response.json();
-			const postsWithIds = data.posts.map((post) => ({
-				...post,
-				_id: post._id.$oid || post._id, // Handle both string and ObjectId formats
-			}));
-			setPosts(postsWithIds.reverse());
+			const response = await apiRequest("/user/posts", "GET", null);
+			if (response.status === 200) {
+				const postsWithIds = response.data.posts.map((post) => ({
+					...post,
+					_id: post._id.$oid || post._id, // Handle both string and ObjectId formats
+				}));
+				setPosts(postsWithIds.reverse());
+			} else {
+				throw Error("Failed to fetch posts");
+			}
 		} catch (error) {
 			toast.error("Failed to fetch posts");
 		} finally {
@@ -197,7 +188,6 @@ const History = () => {
 													<Tooltip title="Delete Post" arrow placement="top">
 														<IconButton
 															onClick={() => {
-																console.log("Post object:", post); // Debug log
 																handleDeletePost(post._id);
 															}}
 															sx={{

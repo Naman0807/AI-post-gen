@@ -14,6 +14,7 @@ import {
 	useTheme,
 } from "@mui/material";
 import { Email, Lock, Person } from "@mui/icons-material";
+import { apiRequest } from "../../utils/api";
 
 const Register = () => {
 	const [name, setName] = useState("");
@@ -26,11 +27,12 @@ const Register = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(`http://localhost:5000/auth/register`, {
+			const registerData = {
 				name,
 				email,
 				password,
-			});
+			};
+			const response = await apiRequest("/auth/register", "POST", registerData);
 			localStorage.setItem("token", response.data.token);
 			router.push("/dashboard");
 		} catch (err) {
