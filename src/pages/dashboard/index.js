@@ -58,6 +58,9 @@ const Dashboard = () => {
 		const hfApiKey = localStorage.getItem("hf_api_key");
 		setGeminiApiKey(geminiApiKey);
 		setHfApiKey(hfApiKey);
+		if (geminiApiKey && hfApiKey) {
+			setIsConfigured(true);
+		}
 	}, []);
 
 	const handleInitializeAPI = async () => {
