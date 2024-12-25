@@ -382,7 +382,7 @@ const Dashboard = () => {
 										value={platform}
 										onChange={(e) => setPlatform(e.target.value)}
 									>
-										{["LinkedIn", "Twitter", "Instagram"].map((p) => (
+										{["LinkedIn", "Twitter"].map((p) => (
 											<FormControlLabel
 												key={p.toLowerCase()}
 												value={p.toLowerCase()}
@@ -431,9 +431,9 @@ const Dashboard = () => {
 											},
 										}}
 									>
-										<option value="small">Small (150-300 words)</option>
-										<option value="medium">Medium (300-400 words)</option>
-										<option value="long">Long (400-550 words)</option>
+										<option value="small">Small (50-100 words)</option>
+										<option value="medium">Medium (100-200 words)</option>
+										<option value="long">Long (200-300 words)</option>
 									</TextField>
 								</FormControl>
 
