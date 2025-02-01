@@ -93,7 +93,7 @@ const Home = () => {
 							{
 								title: "Multi-Platform",
 								description:
-									"Support for LinkedIn, Twitter, Instagram, and more",
+									"Support for LinkedIn and Twitter",
 							},
 							{
 								title: "Image Generation",
