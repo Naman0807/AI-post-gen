@@ -43,7 +43,7 @@ const Dashboard = () => {
 	const [geminiApiKey, setGeminiApiKey] = useState("");
 	const [isConfigured, setIsConfigured] = useState(false);
 	const [engagementScore, setEngagementScore] = useState(null);
-	const [postLength, setPostLength] = useState("medium");
+	const [postLength, setPostLength] = useState(200);
 	const [temperature, setTemperature] = useState(0.7);
 
 	useEffect(() => {
@@ -409,34 +409,51 @@ const Dashboard = () => {
 								<FormControl component="fieldset" sx={{ my: 2, width: "100%" }}>
 									<Typography
 										variant="subtitle1"
-										sx={{ color: "rgba(255, 255, 255, 0.7)" }}
+										sx={{ color: "rgba(255, 255, 255, 0.7)", mb: 1 }}
 									>
-										Post Length
+										Post Length: {postLength} words
 									</Typography>
-									<TextField
-										select
-										fullWidth
-										value={postLength}
-										onChange={(e) => setPostLength(e.target.value)}
-										SelectProps={{
-											native: true,
-										}}
-										sx={{
-											"& .MuiOutlinedInput-root": {
-												color: "#fff",
-												"& fieldset": {
-													borderColor: "rgba(255, 255, 255, 0.2)",
+									<Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+										<Typography
+											sx={{
+												color: "rgba(255, 255, 255, 0.5)",
+												fontSize: "0.875rem",
+											}}
+										>
+											50
+										</Typography>
+										<Slider
+											value={postLength}
+											onChange={(_, newValue) => setPostLength(newValue)}
+											min={50}
+											max={450}
+											step={50}
+											marks
+											valueLabelDisplay="auto"
+											sx={{
+												color: theme.palette.primary.main,
+												"& .MuiSlider-thumb": {
+													"&:hover, &.Mui-focusVisible": {
+														boxShadow: `0px 0px 0px 8px ${alpha(
+															theme.palette.primary.main,
+															0.16
+														)}`,
+													},
 												},
-												"&:hover fieldset": {
-													borderColor: theme.palette.primary.main,
+												"& .MuiSlider-rail": {
+													opacity: 0.3,
 												},
-											},
-										}}
-									>
-										<option value="small">Small (50-100 words)</option>
-										<option value="medium">Medium (100-200 words)</option>
-										<option value="long">Long (200-300 words)</option>
-									</TextField>
+											}}
+										/>
+										<Typography
+											sx={{
+												color: "rgba(255, 255, 255, 0.5)",
+												fontSize: "0.875rem",
+											}}
+										>
+											450
+										</Typography>
+									</Box>
 								</FormControl>
 
 								<FormControl component="fieldset" sx={{ my: 2, width: "100%" }}>
