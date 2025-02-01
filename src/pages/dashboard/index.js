@@ -35,6 +35,7 @@ const Dashboard = () => {
 	const [topic, setTopic] = useState("");
 	const [platform, setPlatform] = useState("linkedin");
 	const [imageCount, setImageCount] = useState(1);
+	const [includeImages, setIncludeImages] = useState(true);
 	const [generatedContent, setGeneratedContent] = useState("");
 	const [generatedImage, setGeneratedImage] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -100,7 +101,8 @@ const Dashboard = () => {
 			const postOptions = {
 				topic,
 				platform,
-				imageCount,
+				includeImages,
+				imageCount: includeImages ? imageCount : 0,
 				postLength,
 				temperature,
 			};
@@ -490,36 +492,86 @@ const Dashboard = () => {
 										variant="subtitle1"
 										sx={{ color: "rgba(255, 255, 255, 0.7)" }}
 									>
-										Number of Images
+										Include Images
 									</Typography>
 									<RadioGroup
 										row
-										value={imageCount}
-										onChange={(e) => setImageCount(Number(e.target.value))}
+										value={includeImages.toString()}
+										onChange={(e) =>
+											setIncludeImages(e.target.value === "true")
+										}
 									>
-										{[1, 2, 3].map((num) => (
-											<FormControlLabel
-												key={num}
-												value={num}
-												control={
-													<Radio
-														sx={{
-															color: "rgba(255, 255, 255, 0.7)",
-															"&.Mui-checked": {
-																color: theme.palette.primary.main,
-															},
-														}}
-													/>
-												}
-												label={
-													<Typography sx={{ color: "#fff" }}>
-														{num} Image{num > 1 ? "s" : ""}
-													</Typography>
-												}
-											/>
-										))}
+										<FormControlLabel
+											value="true"
+											control={
+												<Radio
+													sx={{
+														color: "rgba(255, 255, 255, 0.7)",
+														"&.Mui-checked": {
+															color: theme.palette.primary.main,
+														},
+													}}
+												/>
+											}
+											label={
+												<Typography sx={{ color: "#fff" }}>Yes</Typography>
+											}
+										/>
+										<FormControlLabel
+											value="false"
+											control={
+												<Radio
+													sx={{
+														color: "rgba(255, 255, 255, 0.7)",
+														"&.Mui-checked": {
+															color: theme.palette.primary.main,
+														},
+													}}
+												/>
+											}
+											label={<Typography sx={{ color: "#fff" }}>No</Typography>}
+										/>
 									</RadioGroup>
 								</FormControl>
+
+								{/* Only show image count if includeImages is true */}
+								{includeImages && (
+									<FormControl component="fieldset" sx={{ my: 2 }}>
+										<Typography
+											variant="subtitle1"
+											sx={{ color: "rgba(255, 255, 255, 0.7)" }}
+										>
+											Number of Images
+										</Typography>
+										<RadioGroup
+											row
+											value={imageCount}
+											onChange={(e) => setImageCount(Number(e.target.value))}
+										>
+											{[1, 2, 3].map((num) => (
+												<FormControlLabel
+													key={num}
+													value={num}
+													control={
+														<Radio
+															sx={{
+																color: "rgba(255, 255, 255, 0.7)",
+																"&.Mui-checked": {
+																	color: theme.palette.primary.main,
+																},
+															}}
+														/>
+													}
+													label={
+														<Typography sx={{ color: "#fff" }}>
+															{num} Image{num > 1 ? "s" : ""}
+														</Typography>
+													}
+												/>
+											))}
+										</RadioGroup>
+									</FormControl>
+								)}
 
 								<Button
 									variant="contained"
