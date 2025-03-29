@@ -19,21 +19,52 @@ const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const router = useRouter();
 	const theme = useTheme();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
+		setError(null);
+
 		try {
 			const loginData = {
 				email,
 				password,
 			};
 			const response = await apiRequest("/auth/login", "POST", loginData);
+
+			// Store token
 			localStorage.setItem("token", response.data.token);
+
+			// Store user info
+			localStorage.setItem("user", JSON.stringify(response.data.user));
+
+			// Store API keys if they exist in the response
+			if (response.data.api_keys) {
+				localStorage.setItem("hf_api_key", response.data.api_keys.hf_api_key);
+				localStorage.setItem(
+					"gemini_api_key",
+					response.data.api_keys.gemini_api_key
+				);
+			}
+
+			// Check if there's a warning message
+			if (response.data.warning) {
+				console.warn(response.data.warning);
+			}
+
+			// Redirect to dashboard
 			router.push("/dashboard");
 		} catch (err) {
-			setError(err.response?.data?.error || "An error occurred");
+			console.error("Login error:", err);
+			setError(
+				err.response?.data?.error ||
+					"An error occurred during login. Please try again."
+			);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -169,6 +200,7 @@ const Login = () => {
 								fullWidth
 								variant="contained"
 								size="large"
+								disabled={loading}
 								sx={{
 									mt: 4,
 									mb: 2,
@@ -182,7 +214,7 @@ const Login = () => {
 									},
 								}}
 							>
-								Login
+								{loading ? "Logging in..." : "Login"}
 							</Button>
 						</form>
 
