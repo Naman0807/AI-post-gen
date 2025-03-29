@@ -565,7 +565,7 @@ const Dashboard = () => {
 											value={imageCount}
 											onChange={(e) => setImageCount(Number(e.target.value))}
 										>
-											{[1, 2, 3].map((num) => (
+											{[1, 2].map((num) => (
 												<FormControlLabel
 													key={num}
 													value={num}
